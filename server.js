@@ -1,4 +1,7 @@
 const http = require('http');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://127.0.0.1:27017/fd_mongoose').catch((error) => console.log('error: ', error));
+
 const app = require('./app.js');
 const server = http.createServer(app);
 
