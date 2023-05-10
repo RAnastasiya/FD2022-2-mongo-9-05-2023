@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const taskSchema = new Schema({
     content: { 
         type: String, 
-        required: [true, 'Content number required'],
+        required: [true, 'Content is required'],
         validate: {
             validator: (v) => /[A-Za-z0-9\s]{5,512}/.test(v),
             message: props => `${props.value} is not a valid content!`

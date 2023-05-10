@@ -1,17 +1,16 @@
 const express = require('express');
 const TaskController = require('./controllers/task.controller');
-
+const {errorHandle} = require('./middlewares/error.handle.mw')
 const app = express();
 
 app.use(express.json());
 
-app.get('/tasks', TaskController.findAllTasks)
+app.get('/tasks', TaskController.findAllTasks);
+app.get('/tasks/:idTask', TaskController.findTask);
 app.post('/tasks', TaskController.createTask);
+app.put('/tasks/:idTask', TaskController.updateTask);
+app.delete('/tasks/:idTask', TaskController.deleteTask);
 
-app.use((err, req, res, next) => {
-    const status = err.statusCode || 500;
-    const message = err.message || 'Server error';
-    res.status(status).send(message);
-})
+app.use(errorHandle);
 
 module.exports = app;

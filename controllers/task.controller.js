@@ -1,10 +1,12 @@
+const createHTTPError = require('http-errors');
 const Task = require('../models/Task');
 
 module.exports.createTask = async (req, res, next) => {
     try {
         const { body } = req;
         const task = await Task.create(body);
-        res.status(201).send({ data: task })
+        if (!task) next(createHTTPError(400, 'Bad request!'));
+        res.status(201).send({ data: task });
     } catch (error) {
         next(error)
     }
@@ -13,7 +15,41 @@ module.exports.createTask = async (req, res, next) => {
 module.exports.findAllTasks = async (req, res, next) => {
     try {
         const tasks = await Task.find({});
-        res.status(200).send({ data: tasks })
+        if (tasks.length === 0) next(createHTTPError(404, 'Tasks not found!'))
+        res.status(200).send({ data: tasks });
+    } catch (error) {
+        next(error)
+    }
+};
+
+module.exports.findTask = async (req, res, next) => {
+    try {
+        const { params: {idTask} } = req;
+        const task = await Task.findById(idTask);
+        if (!task) next(createHTTPError(404, 'Task not found!'))
+        res.status(200).send({ data: task });
+    } catch (error) {
+        next(error)
+    }
+};
+
+module.exports.updateTask = async (req, res, next) => {
+    try {
+        const { params: {idTask}, body } = req;
+        const task = await Task.findByIdAndUpdate(idTask, body, {new: true, runValidators: true})
+        if (!task) next(createHTTPError(404, 'Task not found!'))
+        res.status(200).send({ data: task })
+    } catch (error) {
+        next(error)
+    }
+};
+
+module.exports.deleteTask = async (req, res, next) => {
+    try {
+        const { params: { idTask } } = req;
+        const task = await Task.findByIdAndDelete(idTask);
+        if (!task) next(createHTTPError(404, 'Task not found!'))
+        res.status(200).send({ data: task });
     } catch (error) {
         next(error)
     }
