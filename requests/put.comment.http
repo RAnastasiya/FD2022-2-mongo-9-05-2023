@@ -1,4 +1,4 @@
-PUT http://127.0.0.1:3000/comments/6461d8ea747816a6d3d80664 HTTP/1.1
+PUT http://localhost:3005/comments/6461d8ea747816a6d3d80664 HTTP/1.1
 Content-Type: application/json
 
 {
