@@ -17,7 +17,9 @@ module.exports.createTask = async (req, res, next) => {
 module.exports.findAllTasks = async (req, res, next) => {
     try {
         // const tasks = await Task.find({});
-         const tasks = await Comment.populate(await Comment.find({}), {path: 'task'});
+        // const tasks = await Task.populate(await Comment.find({}), {path: 'task'});
+        const tasks = await Task.populate(await Task.find({}), {path: 'comments'});
+       
         if (tasks.length === 0) next(createHTTPError(404, 'Tasks not found!'))
         res.status(200).send({ data: tasks });
     } catch (error) {

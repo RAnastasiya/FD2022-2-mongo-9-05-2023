@@ -18,7 +18,11 @@ const taskSchema = new Schema({
     author: {
         name: String,
         age: { type: Number, min: 14, max: 120 }
-    }
+    },
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Comment',
+    }]
 }, {
     timeseries: true,
     versionKey: false
