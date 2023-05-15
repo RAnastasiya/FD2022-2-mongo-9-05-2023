@@ -11,3 +11,13 @@ module.exports.createComment = async (req, res, next) => {
         next(error)
     }
 };
+
+module.exports.findAllComments = async (req, res, next) => {
+    try {
+        const comments = await Comment.find().populate('task');
+        if (comments.length === 0) next(createHTTPError(404, 'Comment not found!'))
+        res.status(200).send({ data: comments });
+    } catch (error) {
+        next(error)
+    }
+};

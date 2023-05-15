@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const comentSchema = new Schema({
-    bodyComent: { 
+const commentSchema = new Schema({
+    bodyComment: { 
         type: String, 
         required: [true, 'Body is required'],
     },
@@ -10,8 +10,11 @@ const comentSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Task'
     }
+}, {
+    timeseries: true,
+    versionKey: false
 })
 
-const Comment = mongoose.model('Comment', comentSchema);
+const Comment = mongoose.model('Comment', commentSchema);
 
 module.exports = Comment;

@@ -1,5 +1,7 @@
 const createHTTPError = require('http-errors');
 const Task = require('../models/Task');
+const Comment = require('../models/Comment');
+
 
 module.exports.createTask = async (req, res, next) => {
     try {
@@ -14,7 +16,8 @@ module.exports.createTask = async (req, res, next) => {
 
 module.exports.findAllTasks = async (req, res, next) => {
     try {
-        const tasks = await Task.find({});
+        // const tasks = await Task.find({});
+         const tasks = await Comment.populate(await Comment.find({}), {path: 'task'});
         if (tasks.length === 0) next(createHTTPError(404, 'Tasks not found!'))
         res.status(200).send({ data: tasks });
     } catch (error) {
@@ -25,7 +28,8 @@ module.exports.findAllTasks = async (req, res, next) => {
 module.exports.findTask = async (req, res, next) => {
     try {
         const { params: {idTask} } = req;
-        const task = await Task.findById(idTask);
+        // const task = await Task.findById(idTask);
+        const task = await Comment.populate(await Comment.find({task: idTask}), {path: 'task'});
         if (!task) next(createHTTPError(404, 'Task not found!'))
         res.status(200).send({ data: task });
     } catch (error) {
