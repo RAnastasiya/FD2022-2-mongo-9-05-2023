@@ -19,6 +19,9 @@ const taskSchema = new Schema({
         name: String,
         age: { type: Number, min: 14, max: 120 }
     }
+}, {
+    timeseries: true,
+    versionKey: false
 })
 const Task = mongoose.model('Task', taskSchema);
 
