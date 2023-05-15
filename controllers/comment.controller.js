@@ -24,3 +24,37 @@ module.exports.findAllComments = async (req, res, next) => {
         next(error)
     }
 };
+
+module.exports.findComment = async (req, res, next) => {
+    try {
+        const { params: {idComment} } = req;
+        const comment = await Comment.findById(idComment);
+        if (!comment) next(createHTTPError(404, 'Comment not found!'))
+        res.status(200).send({ data: comment });
+    } catch (error) {
+        next(error)
+    }
+};
+
+module.exports.updateComment = async (req, res, next) => {
+    try {
+      const { params: { idComment }, body } = req;
+      const comment = await Comment.findByIdAndUpdate(idComment, body, { new: true, runValidators: true });
+      if (!comment) next(createHTTPError(404, 'Comment not found!'));
+      res.status(200).send({ data: comment });
+    } catch (error) {
+      next(error);
+    }
+  };
+  
+
+module.exports.deleteComment = async (req, res, next) => {
+    try {
+        const { params: { idComment } } = req;
+        const comment = await Comment.findByIdAndDelete(idComment);
+        if (!comment) next(createHTTPError(404, 'Comment not found!'))
+        res.status(200).send({ data: comment });
+    } catch (error) {
+        next(error)
+    }
+};
